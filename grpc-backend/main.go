@@ -5,7 +5,7 @@ import (
 )
 
 func main() {
-	prv, err := trace_jaeger.NewProvider(trace_jaeger.ProviderConfig{
+	prv, err := tracejaeger.NewProvider(tracejaeger.ProviderConfig{
 		JaegerEndpoint: "http://meetme-app.ru:14268/api/traces",
 		ServiceName:    "chatServer",
 		Disabled:       false,
