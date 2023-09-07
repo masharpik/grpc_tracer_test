@@ -9,10 +9,11 @@ services:
   server-backend:
     image: golang:1.20.7-alpine3.18
     volumes:
-      - "${PWD}/backend:/app"
+      - "${PWD}:/app"
+      - backend-modules:/go/pkg/mod
     restart: always
     working_dir: '/app'
-    command: sh -c "go run ./main.go"
+    command: sh -c "go run ./backend/main.go"
     ports:
       - "8080:8080"
     depends_on:
@@ -20,11 +21,16 @@ services:
   grpc-backend:
     image: golang:1.20.7-alpine3.18
     volumes:
-      - "${PWD}/grpc-backend:/app"
+      - "${PWD}:/app"
+      - grpc-backend-modules:/go/pkg/mod
     restart: always
     working_dir: '/app'
-    command: sh -c "go run ./main.go"
+    command: sh -c "go run ./grpc-backend/main.go"
     ports:
       - "8081:8081"
     depends_on:
       - jaeger
+
+volumes:
+  backend-modules:
+  grpc-backend-modules:

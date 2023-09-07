@@ -7,6 +7,7 @@ import (
 	"net"
 
 	"go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc"
+	"go.opentelemetry.io/otel"
 	"google.golang.org/grpc"
 
 	"github.com/masharpik/grpc_tracer_test/proto"
@@ -42,5 +43,8 @@ func (server *Server) RunServer() (err error) {
 }
 
 func (server *Server) Test(ctx context.Context, in *proto.TestRequest) (resp *proto.TestResponse, err error) {
-	return
+	_, span := otel.GetTracerProvider().Tracer("gRPC-Backend").Start(ctx, "in grpc-test")
+	defer span.End()
+
+	return &proto.TestResponse{}, nil
 }

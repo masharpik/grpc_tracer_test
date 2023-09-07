@@ -11,13 +11,13 @@ import (
 func main() {
 	ctx := context.Background()
 
-	prv, err := tracejaeger.NewProvider("http://localhost:14268/tracer", "gRPC-Backend")
+	prv, err := tracejaeger.NewProvider("http://jaeger:14268/api/traces", "gRPC-Backend")
 	if err != nil {
 		log.Fatalf("tracejaeger.NewProvider: %v", err)
 	}
 	defer tracejaeger.Close(prv, ctx)
 
-	server := server.InitServer("localhost", "8081")
+	server := server.InitServer("0.0.0.0", "8081")
 
 	if err = server.RunServer(); err != nil {
 		log.Fatalf("server.RunServer: %v", err)
