@@ -1,13 +1,25 @@
 package main
 
 import (
-	"github.com/masharpik/grpc_tracer_test/utils/trace_jaeger"
+	"context"
+	"log"
+
+	"github.com/masharpik/grpc_tracer_test/grpc-backend/pkg/server"
+	tracejaeger "github.com/masharpik/grpc_tracer_test/utils/trace_jaeger"
 )
 
 func main() {
-	prv, err := tracejaeger.NewProvider(tracejaeger.ProviderConfig{
-		JaegerEndpoint: "http://meetme-app.ru:14268/api/traces",
-		ServiceName:    "chatServer",
-		Disabled:       false,
-	})
+	ctx := context.Background()
+
+	prv, err := tracejaeger.NewProvider("http://localhost:14268/tracer", "gRPC-Backend")
+	if err != nil {
+		log.Fatalf("tracejaeger.NewProvider: %v", err)
+	}
+	defer tracejaeger.Close(prv, ctx)
+
+	server := server.InitServer("localhost", "8081")
+
+	if err = server.RunServer(); err != nil {
+		log.Fatalf("server.RunServer: %v", err)
+	}
 }
