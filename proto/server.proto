@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package proto_grpc_server;
+
+option go_package = "github.com/masharpik/grpc_tracer_test/grpc-backend/pkg/proto";
+
+message TestRequest {}
+
+message TestResponse {}
+
+service GRPCBackend {
+    rpc Test(TestRequest) returns (TestResponse) {}
+}
